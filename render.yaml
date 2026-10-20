@@ -1,0 +1,28 @@
+# ============================================================
+# Configuration Render — force le runtime Node.js
+# (sans ce fichier, Render peut détecter le projet comme Elixir
+#  et lancer "mix phx.digest" qui échoue)
+# ============================================================
+services:
+  - type: web
+    name: kzlookup
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22.11.0"
+      - key: REGISTER_LIMIT
+        value: "20"
+      # ⚠️ OFFRE PAYANTE UNIQUEMENT (Starter+) : décommente le bloc "disk"
+      # ci-dessous ET ces 2 lignes pour que la base de données survives
+      # aux redéploiements (le disque est monté dans /var/data) :
+      # - key: DATA_DIR
+      #   value: /var/data
+    # ⚠️ OFFRE PAYANTE UNIQUEMENT — disque persistant pour la base SQLite :
+    # disk:
+    #   name: ossearch-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
